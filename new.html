@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body {
+            background-image:url(image_3.jpg);
+            font-family: "Times New Roman",Times, serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+
+            background-color: #ffffffa7;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+            padding: 50px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #2c052a;
+            
+        }
+
+        input[type="text"],
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #bcb5bf;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #c431e19e;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #6c0b7b;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 5px 0;
+            background-color: #ffffff;
+        }
+
+        li button {
+            background-color: #56386d;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        li button:hover {
+            background-color: #2d0b47;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1><i>My To-Do List <img srs="C:\Users\LAYA\Desktop\new\icon.jpg"></i></h1>
+        <input type="text" id="task" placeholder="Add a new task">
+        <button onclick="addTask()">Add</button>
+        <br><br>
+        <input type="datetime-local" id="datetime" placeholder="Select a date and time">
+        <button onclick="addTask()">Add</button>
+
+        <ul id="taskList">
+            <!-- Tasks will be added here -->
+        </ul>
+    </div>
+
+    <script>
+        const tasks = [];
+
+        function addTask() {
+            var taskInput = document.getElementById("task");
+            var datetimeInput = document.getElementById("datetime");
+            var taskText = taskInput.value;
+            var taskDateTime = datetimeInput.value;
+
+            if (taskText.trim() === "") {
+                alert("Please enter a task.");
+            } else if (!taskDateTime) {
+                alert("Please select a date and time.");
+            } else {
+                const isDuplicate = tasks.some(task => task.dateTime === taskDateTime);
+                if (isDuplicate) {
+                    alert("This task with the same date and time already exists.");
+                } else {
+                    var taskList = document.getElementById("taskList");
+                    var listItem = document.createElement("li");
+
+                    listItem.innerHTML = `TASK: ${taskText} - Due on: ${taskDateTime} <button onclick="deleteTask(this)">  Delete </button>`;
+                    taskList.appendChild(listItem);
+
+                    tasks.push({ text: taskText, dateTime: taskDateTime });
+
+                    taskInput.value = "";
+                    datetimeInput.value = "";
+                }
+            }
+        }
+
+        function deleteTask(button) {
+            var listItem = button.parentNode;
+            var taskText = listItem.textContent.split(" - Due on: ")[0];
+
+            var taskIndex = tasks.findIndex(task => task.text === taskText);
+
+            if (taskIndex !== -1) {
+                tasks.splice(taskIndex, 1);
+            }
+
+            listItem.remove();
+        }
+    </script>
+</body>
+</html>
